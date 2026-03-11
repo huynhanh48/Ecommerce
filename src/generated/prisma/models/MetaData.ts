@@ -28,21 +28,19 @@ export type AggregateMetaData = {
 
 export type MetaDataAvgAggregateOutputType = {
   id: number | null
-  tel: number | null
   age: number | null
   userId: number | null
 }
 
 export type MetaDataSumAggregateOutputType = {
   id: number | null
-  tel: number | null
   age: number | null
   userId: number | null
 }
 
 export type MetaDataMinAggregateOutputType = {
   id: number | null
-  tel: number | null
+  tel: string | null
   age: number | null
   userId: number | null
   createdAt: Date | null
@@ -51,7 +49,7 @@ export type MetaDataMinAggregateOutputType = {
 
 export type MetaDataMaxAggregateOutputType = {
   id: number | null
-  tel: number | null
+  tel: string | null
   age: number | null
   userId: number | null
   createdAt: Date | null
@@ -71,14 +69,12 @@ export type MetaDataCountAggregateOutputType = {
 
 export type MetaDataAvgAggregateInputType = {
   id?: true
-  tel?: true
   age?: true
   userId?: true
 }
 
 export type MetaDataSumAggregateInputType = {
   id?: true
-  tel?: true
   age?: true
   userId?: true
 }
@@ -199,7 +195,7 @@ export type MetaDataGroupByArgs<ExtArgs extends runtime.Types.Extensions.Interna
 
 export type MetaDataGroupByOutputType = {
   id: number
-  tel: number
+  tel: string
   age: number
   userId: number
   createdAt: Date
@@ -231,12 +227,13 @@ export type MetaDataWhereInput = {
   OR?: Prisma.MetaDataWhereInput[]
   NOT?: Prisma.MetaDataWhereInput | Prisma.MetaDataWhereInput[]
   id?: Prisma.IntFilter<"MetaData"> | number
-  tel?: Prisma.IntFilter<"MetaData"> | number
+  tel?: Prisma.StringFilter<"MetaData"> | string
   age?: Prisma.IntFilter<"MetaData"> | number
   userId?: Prisma.IntFilter<"MetaData"> | number
   createdAt?: Prisma.DateTimeFilter<"MetaData"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"MetaData"> | Date | string
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
+  address?: Prisma.AddressListRelationFilter
 }
 
 export type MetaDataOrderByWithRelationInput = {
@@ -247,6 +244,8 @@ export type MetaDataOrderByWithRelationInput = {
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   user?: Prisma.UserOrderByWithRelationInput
+  address?: Prisma.AddressOrderByRelationAggregateInput
+  _relevance?: Prisma.MetaDataOrderByRelevanceInput
 }
 
 export type MetaDataWhereUniqueInput = Prisma.AtLeast<{
@@ -255,11 +254,12 @@ export type MetaDataWhereUniqueInput = Prisma.AtLeast<{
   AND?: Prisma.MetaDataWhereInput | Prisma.MetaDataWhereInput[]
   OR?: Prisma.MetaDataWhereInput[]
   NOT?: Prisma.MetaDataWhereInput | Prisma.MetaDataWhereInput[]
-  tel?: Prisma.IntFilter<"MetaData"> | number
+  tel?: Prisma.StringFilter<"MetaData"> | string
   age?: Prisma.IntFilter<"MetaData"> | number
   createdAt?: Prisma.DateTimeFilter<"MetaData"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"MetaData"> | Date | string
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
+  address?: Prisma.AddressListRelationFilter
 }, "id" | "userId">
 
 export type MetaDataOrderByWithAggregationInput = {
@@ -281,7 +281,7 @@ export type MetaDataScalarWhereWithAggregatesInput = {
   OR?: Prisma.MetaDataScalarWhereWithAggregatesInput[]
   NOT?: Prisma.MetaDataScalarWhereWithAggregatesInput | Prisma.MetaDataScalarWhereWithAggregatesInput[]
   id?: Prisma.IntWithAggregatesFilter<"MetaData"> | number
-  tel?: Prisma.IntWithAggregatesFilter<"MetaData"> | number
+  tel?: Prisma.StringWithAggregatesFilter<"MetaData"> | string
   age?: Prisma.IntWithAggregatesFilter<"MetaData"> | number
   userId?: Prisma.IntWithAggregatesFilter<"MetaData"> | number
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"MetaData"> | Date | string
@@ -289,42 +289,46 @@ export type MetaDataScalarWhereWithAggregatesInput = {
 }
 
 export type MetaDataCreateInput = {
-  tel: number
+  tel: string
   age: number
   createdAt?: Date | string
   updatedAt?: Date | string
   user: Prisma.UserCreateNestedOneWithoutMetaDataInput
+  address?: Prisma.AddressCreateNestedManyWithoutMetaDataInput
 }
 
 export type MetaDataUncheckedCreateInput = {
   id?: number
-  tel: number
+  tel: string
   age: number
   userId: number
   createdAt?: Date | string
   updatedAt?: Date | string
+  address?: Prisma.AddressUncheckedCreateNestedManyWithoutMetaDataInput
 }
 
 export type MetaDataUpdateInput = {
-  tel?: Prisma.IntFieldUpdateOperationsInput | number
+  tel?: Prisma.StringFieldUpdateOperationsInput | string
   age?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   user?: Prisma.UserUpdateOneRequiredWithoutMetaDataNestedInput
+  address?: Prisma.AddressUpdateManyWithoutMetaDataNestedInput
 }
 
 export type MetaDataUncheckedUpdateInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
-  tel?: Prisma.IntFieldUpdateOperationsInput | number
+  tel?: Prisma.StringFieldUpdateOperationsInput | string
   age?: Prisma.IntFieldUpdateOperationsInput | number
   userId?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  address?: Prisma.AddressUncheckedUpdateManyWithoutMetaDataNestedInput
 }
 
 export type MetaDataCreateManyInput = {
   id?: number
-  tel: number
+  tel: string
   age: number
   userId: number
   createdAt?: Date | string
@@ -332,7 +336,7 @@ export type MetaDataCreateManyInput = {
 }
 
 export type MetaDataUpdateManyMutationInput = {
-  tel?: Prisma.IntFieldUpdateOperationsInput | number
+  tel?: Prisma.StringFieldUpdateOperationsInput | string
   age?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -340,7 +344,7 @@ export type MetaDataUpdateManyMutationInput = {
 
 export type MetaDataUncheckedUpdateManyInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
-  tel?: Prisma.IntFieldUpdateOperationsInput | number
+  tel?: Prisma.StringFieldUpdateOperationsInput | string
   age?: Prisma.IntFieldUpdateOperationsInput | number
   userId?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -350,6 +354,12 @@ export type MetaDataUncheckedUpdateManyInput = {
 export type MetaDataNullableScalarRelationFilter = {
   is?: Prisma.MetaDataWhereInput | null
   isNot?: Prisma.MetaDataWhereInput | null
+}
+
+export type MetaDataOrderByRelevanceInput = {
+  fields: Prisma.MetaDataOrderByRelevanceFieldEnum | Prisma.MetaDataOrderByRelevanceFieldEnum[]
+  sort: Prisma.SortOrder
+  search: string
 }
 
 export type MetaDataCountOrderByAggregateInput = {
@@ -363,7 +373,6 @@ export type MetaDataCountOrderByAggregateInput = {
 
 export type MetaDataAvgOrderByAggregateInput = {
   id?: Prisma.SortOrder
-  tel?: Prisma.SortOrder
   age?: Prisma.SortOrder
   userId?: Prisma.SortOrder
 }
@@ -388,9 +397,13 @@ export type MetaDataMinOrderByAggregateInput = {
 
 export type MetaDataSumOrderByAggregateInput = {
   id?: Prisma.SortOrder
-  tel?: Prisma.SortOrder
   age?: Prisma.SortOrder
   userId?: Prisma.SortOrder
+}
+
+export type MetaDataScalarRelationFilter = {
+  is?: Prisma.MetaDataWhereInput
+  isNot?: Prisma.MetaDataWhereInput
 }
 
 export type MetaDataCreateNestedOneWithoutUserInput = {
@@ -425,19 +438,35 @@ export type MetaDataUncheckedUpdateOneWithoutUserNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.MetaDataUpdateToOneWithWhereWithoutUserInput, Prisma.MetaDataUpdateWithoutUserInput>, Prisma.MetaDataUncheckedUpdateWithoutUserInput>
 }
 
+export type MetaDataCreateNestedOneWithoutAddressInput = {
+  create?: Prisma.XOR<Prisma.MetaDataCreateWithoutAddressInput, Prisma.MetaDataUncheckedCreateWithoutAddressInput>
+  connectOrCreate?: Prisma.MetaDataCreateOrConnectWithoutAddressInput
+  connect?: Prisma.MetaDataWhereUniqueInput
+}
+
+export type MetaDataUpdateOneRequiredWithoutAddressNestedInput = {
+  create?: Prisma.XOR<Prisma.MetaDataCreateWithoutAddressInput, Prisma.MetaDataUncheckedCreateWithoutAddressInput>
+  connectOrCreate?: Prisma.MetaDataCreateOrConnectWithoutAddressInput
+  upsert?: Prisma.MetaDataUpsertWithoutAddressInput
+  connect?: Prisma.MetaDataWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.MetaDataUpdateToOneWithWhereWithoutAddressInput, Prisma.MetaDataUpdateWithoutAddressInput>, Prisma.MetaDataUncheckedUpdateWithoutAddressInput>
+}
+
 export type MetaDataCreateWithoutUserInput = {
-  tel: number
+  tel: string
   age: number
   createdAt?: Date | string
   updatedAt?: Date | string
+  address?: Prisma.AddressCreateNestedManyWithoutMetaDataInput
 }
 
 export type MetaDataUncheckedCreateWithoutUserInput = {
   id?: number
-  tel: number
+  tel: string
   age: number
   createdAt?: Date | string
   updatedAt?: Date | string
+  address?: Prisma.AddressUncheckedCreateNestedManyWithoutMetaDataInput
 }
 
 export type MetaDataCreateOrConnectWithoutUserInput = {
@@ -457,20 +486,101 @@ export type MetaDataUpdateToOneWithWhereWithoutUserInput = {
 }
 
 export type MetaDataUpdateWithoutUserInput = {
-  tel?: Prisma.IntFieldUpdateOperationsInput | number
+  tel?: Prisma.StringFieldUpdateOperationsInput | string
   age?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  address?: Prisma.AddressUpdateManyWithoutMetaDataNestedInput
 }
 
 export type MetaDataUncheckedUpdateWithoutUserInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
-  tel?: Prisma.IntFieldUpdateOperationsInput | number
+  tel?: Prisma.StringFieldUpdateOperationsInput | string
   age?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  address?: Prisma.AddressUncheckedUpdateManyWithoutMetaDataNestedInput
+}
+
+export type MetaDataCreateWithoutAddressInput = {
+  tel: string
+  age: number
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  user: Prisma.UserCreateNestedOneWithoutMetaDataInput
+}
+
+export type MetaDataUncheckedCreateWithoutAddressInput = {
+  id?: number
+  tel: string
+  age: number
+  userId: number
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type MetaDataCreateOrConnectWithoutAddressInput = {
+  where: Prisma.MetaDataWhereUniqueInput
+  create: Prisma.XOR<Prisma.MetaDataCreateWithoutAddressInput, Prisma.MetaDataUncheckedCreateWithoutAddressInput>
+}
+
+export type MetaDataUpsertWithoutAddressInput = {
+  update: Prisma.XOR<Prisma.MetaDataUpdateWithoutAddressInput, Prisma.MetaDataUncheckedUpdateWithoutAddressInput>
+  create: Prisma.XOR<Prisma.MetaDataCreateWithoutAddressInput, Prisma.MetaDataUncheckedCreateWithoutAddressInput>
+  where?: Prisma.MetaDataWhereInput
+}
+
+export type MetaDataUpdateToOneWithWhereWithoutAddressInput = {
+  where?: Prisma.MetaDataWhereInput
+  data: Prisma.XOR<Prisma.MetaDataUpdateWithoutAddressInput, Prisma.MetaDataUncheckedUpdateWithoutAddressInput>
+}
+
+export type MetaDataUpdateWithoutAddressInput = {
+  tel?: Prisma.StringFieldUpdateOperationsInput | string
+  age?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  user?: Prisma.UserUpdateOneRequiredWithoutMetaDataNestedInput
+}
+
+export type MetaDataUncheckedUpdateWithoutAddressInput = {
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  tel?: Prisma.StringFieldUpdateOperationsInput | string
+  age?: Prisma.IntFieldUpdateOperationsInput | number
+  userId?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
+
+/**
+ * Count Type MetaDataCountOutputType
+ */
+
+export type MetaDataCountOutputType = {
+  address: number
+}
+
+export type MetaDataCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  address?: boolean | MetaDataCountOutputTypeCountAddressArgs
+}
+
+/**
+ * MetaDataCountOutputType without action
+ */
+export type MetaDataCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the MetaDataCountOutputType
+   */
+  select?: Prisma.MetaDataCountOutputTypeSelect<ExtArgs> | null
+}
+
+/**
+ * MetaDataCountOutputType without action
+ */
+export type MetaDataCountOutputTypeCountAddressArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.AddressWhereInput
+}
 
 
 export type MetaDataSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -481,6 +591,8 @@ export type MetaDataSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs
   createdAt?: boolean
   updatedAt?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  address?: boolean | Prisma.MetaData$addressArgs<ExtArgs>
+  _count?: boolean | Prisma.MetaDataCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["metaData"]>
 
 
@@ -497,16 +609,19 @@ export type MetaDataSelectScalar = {
 export type MetaDataOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "tel" | "age" | "userId" | "createdAt" | "updatedAt", ExtArgs["result"]["metaData"]>
 export type MetaDataInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  address?: boolean | Prisma.MetaData$addressArgs<ExtArgs>
+  _count?: boolean | Prisma.MetaDataCountOutputTypeDefaultArgs<ExtArgs>
 }
 
 export type $MetaDataPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "MetaData"
   objects: {
     user: Prisma.$UserPayload<ExtArgs>
+    address: Prisma.$AddressPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: number
-    tel: number
+    tel: string
     age: number
     userId: number
     createdAt: Date
@@ -852,6 +967,7 @@ readonly fields: MetaDataFieldRefs;
 export interface Prisma__MetaDataClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   user<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  address<T extends Prisma.MetaData$addressArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.MetaData$addressArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AddressPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -882,7 +998,7 @@ export interface Prisma__MetaDataClient<T, Null = never, ExtArgs extends runtime
  */
 export interface MetaDataFieldRefs {
   readonly id: Prisma.FieldRef<"MetaData", 'Int'>
-  readonly tel: Prisma.FieldRef<"MetaData", 'Int'>
+  readonly tel: Prisma.FieldRef<"MetaData", 'String'>
   readonly age: Prisma.FieldRef<"MetaData", 'Int'>
   readonly userId: Prisma.FieldRef<"MetaData", 'Int'>
   readonly createdAt: Prisma.FieldRef<"MetaData", 'DateTime'>
@@ -1227,6 +1343,30 @@ export type MetaDataDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Inte
    * Limit how many MetaData to delete.
    */
   limit?: number
+}
+
+/**
+ * MetaData.address
+ */
+export type MetaData$addressArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Address
+   */
+  select?: Prisma.AddressSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Address
+   */
+  omit?: Prisma.AddressOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.AddressInclude<ExtArgs> | null
+  where?: Prisma.AddressWhereInput
+  orderBy?: Prisma.AddressOrderByWithRelationInput | Prisma.AddressOrderByWithRelationInput[]
+  cursor?: Prisma.AddressWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.AddressScalarFieldEnum | Prisma.AddressScalarFieldEnum[]
 }
 
 /**

@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE `MetaData` MODIFY `tel` VARCHAR(191) NOT NULL;

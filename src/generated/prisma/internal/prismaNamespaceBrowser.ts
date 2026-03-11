@@ -52,7 +52,8 @@ export const AnyNull = runtime.AnyNull
 
 export const ModelName = {
   User: 'User',
-  MetaData: 'MetaData'
+  MetaData: 'MetaData',
+  Address: 'Address'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -96,6 +97,20 @@ export const MetaDataScalarFieldEnum = {
 export type MetaDataScalarFieldEnum = (typeof MetaDataScalarFieldEnum)[keyof typeof MetaDataScalarFieldEnum]
 
 
+export const AddressScalarFieldEnum = {
+  id: 'id',
+  lineone: 'lineone',
+  linetwo: 'linetwo',
+  province: 'province',
+  district: 'district',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  metaDataId: 'metaDataId'
+} as const
+
+export type AddressScalarFieldEnum = (typeof AddressScalarFieldEnum)[keyof typeof AddressScalarFieldEnum]
+
+
 export const SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -119,4 +134,21 @@ export const UserOrderByRelevanceFieldEnum = {
 } as const
 
 export type UserOrderByRelevanceFieldEnum = (typeof UserOrderByRelevanceFieldEnum)[keyof typeof UserOrderByRelevanceFieldEnum]
+
+
+export const MetaDataOrderByRelevanceFieldEnum = {
+  tel: 'tel'
+} as const
+
+export type MetaDataOrderByRelevanceFieldEnum = (typeof MetaDataOrderByRelevanceFieldEnum)[keyof typeof MetaDataOrderByRelevanceFieldEnum]
+
+
+export const AddressOrderByRelevanceFieldEnum = {
+  lineone: 'lineone',
+  linetwo: 'linetwo',
+  province: 'province',
+  district: 'district'
+} as const
+
+export type AddressOrderByRelevanceFieldEnum = (typeof AddressOrderByRelevanceFieldEnum)[keyof typeof AddressOrderByRelevanceFieldEnum]
 

@@ -1,13 +1,12 @@
 import express from 'express'
 import { PORT } from '~/secrets.js'
 import rootRouter from './routes'
+import { endpointMiddleware } from './endpointMiddleware'
 const app = express()
 
 app.use(express.json())
-app.get("/", (req, res) => {
-    res.send("Hello World!")
-})
 app.use("/api", rootRouter)
+app.use(endpointMiddleware)
 app.listen(PORT, () => {
-    console.log(`Example app listening on port ${PORT}`)
-})
+    console.log(`Server is running at http://localhost:${PORT}`)
+})  

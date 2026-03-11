@@ -27,3 +27,8 @@ export type User = Prisma.UserModel
  * 
  */
 export type MetaData = Prisma.MetaDataModel
+/**
+ * Model Address
+ * 
+ */
+export type Address = Prisma.AddressModel

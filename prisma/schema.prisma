@@ -30,11 +30,26 @@ model User {
 }
 
 model MetaData {
-  id        Int      @id @default(autoincrement())
-  tel       Int
+  id        Int       @id @default(autoincrement())
+  tel       String
   age       Int
-  userId    Int      @unique
-  user      User     @relation(fields: [userId], references: [id])
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  gender    Boolean?
+  userId    Int       @unique
+  user      User      @relation(fields: [userId], references: [id])
+  address   Address[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+}
+
+model Address {
+  id       Int    @id @default(autoincrement())
+  lineone  String
+  linetwo  String
+  province String
+  district String
+
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  metaData   MetaData @relation(fields: [metaDataId], references: [id])
+  metaDataId Int
 }
