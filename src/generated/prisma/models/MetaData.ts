@@ -42,6 +42,7 @@ export type MetaDataMinAggregateOutputType = {
   id: number | null
   tel: string | null
   age: number | null
+  gender: boolean | null
   userId: number | null
   createdAt: Date | null
   updatedAt: Date | null
@@ -51,6 +52,7 @@ export type MetaDataMaxAggregateOutputType = {
   id: number | null
   tel: string | null
   age: number | null
+  gender: boolean | null
   userId: number | null
   createdAt: Date | null
   updatedAt: Date | null
@@ -60,6 +62,7 @@ export type MetaDataCountAggregateOutputType = {
   id: number
   tel: number
   age: number
+  gender: number
   userId: number
   createdAt: number
   updatedAt: number
@@ -83,6 +86,7 @@ export type MetaDataMinAggregateInputType = {
   id?: true
   tel?: true
   age?: true
+  gender?: true
   userId?: true
   createdAt?: true
   updatedAt?: true
@@ -92,6 +96,7 @@ export type MetaDataMaxAggregateInputType = {
   id?: true
   tel?: true
   age?: true
+  gender?: true
   userId?: true
   createdAt?: true
   updatedAt?: true
@@ -101,6 +106,7 @@ export type MetaDataCountAggregateInputType = {
   id?: true
   tel?: true
   age?: true
+  gender?: true
   userId?: true
   createdAt?: true
   updatedAt?: true
@@ -197,6 +203,7 @@ export type MetaDataGroupByOutputType = {
   id: number
   tel: string
   age: number
+  gender: boolean | null
   userId: number
   createdAt: Date
   updatedAt: Date
@@ -229,6 +236,7 @@ export type MetaDataWhereInput = {
   id?: Prisma.IntFilter<"MetaData"> | number
   tel?: Prisma.StringFilter<"MetaData"> | string
   age?: Prisma.IntFilter<"MetaData"> | number
+  gender?: Prisma.BoolNullableFilter<"MetaData"> | boolean | null
   userId?: Prisma.IntFilter<"MetaData"> | number
   createdAt?: Prisma.DateTimeFilter<"MetaData"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"MetaData"> | Date | string
@@ -240,6 +248,7 @@ export type MetaDataOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   tel?: Prisma.SortOrder
   age?: Prisma.SortOrder
+  gender?: Prisma.SortOrderInput | Prisma.SortOrder
   userId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -256,6 +265,7 @@ export type MetaDataWhereUniqueInput = Prisma.AtLeast<{
   NOT?: Prisma.MetaDataWhereInput | Prisma.MetaDataWhereInput[]
   tel?: Prisma.StringFilter<"MetaData"> | string
   age?: Prisma.IntFilter<"MetaData"> | number
+  gender?: Prisma.BoolNullableFilter<"MetaData"> | boolean | null
   createdAt?: Prisma.DateTimeFilter<"MetaData"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"MetaData"> | Date | string
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
@@ -266,6 +276,7 @@ export type MetaDataOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   tel?: Prisma.SortOrder
   age?: Prisma.SortOrder
+  gender?: Prisma.SortOrderInput | Prisma.SortOrder
   userId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -283,6 +294,7 @@ export type MetaDataScalarWhereWithAggregatesInput = {
   id?: Prisma.IntWithAggregatesFilter<"MetaData"> | number
   tel?: Prisma.StringWithAggregatesFilter<"MetaData"> | string
   age?: Prisma.IntWithAggregatesFilter<"MetaData"> | number
+  gender?: Prisma.BoolNullableWithAggregatesFilter<"MetaData"> | boolean | null
   userId?: Prisma.IntWithAggregatesFilter<"MetaData"> | number
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"MetaData"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"MetaData"> | Date | string
@@ -291,6 +303,7 @@ export type MetaDataScalarWhereWithAggregatesInput = {
 export type MetaDataCreateInput = {
   tel: string
   age: number
+  gender?: boolean | null
   createdAt?: Date | string
   updatedAt?: Date | string
   user: Prisma.UserCreateNestedOneWithoutMetaDataInput
@@ -301,6 +314,7 @@ export type MetaDataUncheckedCreateInput = {
   id?: number
   tel: string
   age: number
+  gender?: boolean | null
   userId: number
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -310,6 +324,7 @@ export type MetaDataUncheckedCreateInput = {
 export type MetaDataUpdateInput = {
   tel?: Prisma.StringFieldUpdateOperationsInput | string
   age?: Prisma.IntFieldUpdateOperationsInput | number
+  gender?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   user?: Prisma.UserUpdateOneRequiredWithoutMetaDataNestedInput
@@ -320,6 +335,7 @@ export type MetaDataUncheckedUpdateInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   tel?: Prisma.StringFieldUpdateOperationsInput | string
   age?: Prisma.IntFieldUpdateOperationsInput | number
+  gender?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   userId?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -330,6 +346,7 @@ export type MetaDataCreateManyInput = {
   id?: number
   tel: string
   age: number
+  gender?: boolean | null
   userId: number
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -338,6 +355,7 @@ export type MetaDataCreateManyInput = {
 export type MetaDataUpdateManyMutationInput = {
   tel?: Prisma.StringFieldUpdateOperationsInput | string
   age?: Prisma.IntFieldUpdateOperationsInput | number
+  gender?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -346,6 +364,7 @@ export type MetaDataUncheckedUpdateManyInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   tel?: Prisma.StringFieldUpdateOperationsInput | string
   age?: Prisma.IntFieldUpdateOperationsInput | number
+  gender?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   userId?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -366,6 +385,7 @@ export type MetaDataCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   tel?: Prisma.SortOrder
   age?: Prisma.SortOrder
+  gender?: Prisma.SortOrder
   userId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -381,6 +401,7 @@ export type MetaDataMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   tel?: Prisma.SortOrder
   age?: Prisma.SortOrder
+  gender?: Prisma.SortOrder
   userId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -390,6 +411,7 @@ export type MetaDataMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   tel?: Prisma.SortOrder
   age?: Prisma.SortOrder
+  gender?: Prisma.SortOrder
   userId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -438,6 +460,10 @@ export type MetaDataUncheckedUpdateOneWithoutUserNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.MetaDataUpdateToOneWithWhereWithoutUserInput, Prisma.MetaDataUpdateWithoutUserInput>, Prisma.MetaDataUncheckedUpdateWithoutUserInput>
 }
 
+export type NullableBoolFieldUpdateOperationsInput = {
+  set?: boolean | null
+}
+
 export type MetaDataCreateNestedOneWithoutAddressInput = {
   create?: Prisma.XOR<Prisma.MetaDataCreateWithoutAddressInput, Prisma.MetaDataUncheckedCreateWithoutAddressInput>
   connectOrCreate?: Prisma.MetaDataCreateOrConnectWithoutAddressInput
@@ -455,6 +481,7 @@ export type MetaDataUpdateOneRequiredWithoutAddressNestedInput = {
 export type MetaDataCreateWithoutUserInput = {
   tel: string
   age: number
+  gender?: boolean | null
   createdAt?: Date | string
   updatedAt?: Date | string
   address?: Prisma.AddressCreateNestedManyWithoutMetaDataInput
@@ -464,6 +491,7 @@ export type MetaDataUncheckedCreateWithoutUserInput = {
   id?: number
   tel: string
   age: number
+  gender?: boolean | null
   createdAt?: Date | string
   updatedAt?: Date | string
   address?: Prisma.AddressUncheckedCreateNestedManyWithoutMetaDataInput
@@ -488,6 +516,7 @@ export type MetaDataUpdateToOneWithWhereWithoutUserInput = {
 export type MetaDataUpdateWithoutUserInput = {
   tel?: Prisma.StringFieldUpdateOperationsInput | string
   age?: Prisma.IntFieldUpdateOperationsInput | number
+  gender?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   address?: Prisma.AddressUpdateManyWithoutMetaDataNestedInput
@@ -497,6 +526,7 @@ export type MetaDataUncheckedUpdateWithoutUserInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   tel?: Prisma.StringFieldUpdateOperationsInput | string
   age?: Prisma.IntFieldUpdateOperationsInput | number
+  gender?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   address?: Prisma.AddressUncheckedUpdateManyWithoutMetaDataNestedInput
@@ -505,6 +535,7 @@ export type MetaDataUncheckedUpdateWithoutUserInput = {
 export type MetaDataCreateWithoutAddressInput = {
   tel: string
   age: number
+  gender?: boolean | null
   createdAt?: Date | string
   updatedAt?: Date | string
   user: Prisma.UserCreateNestedOneWithoutMetaDataInput
@@ -514,6 +545,7 @@ export type MetaDataUncheckedCreateWithoutAddressInput = {
   id?: number
   tel: string
   age: number
+  gender?: boolean | null
   userId: number
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -538,6 +570,7 @@ export type MetaDataUpdateToOneWithWhereWithoutAddressInput = {
 export type MetaDataUpdateWithoutAddressInput = {
   tel?: Prisma.StringFieldUpdateOperationsInput | string
   age?: Prisma.IntFieldUpdateOperationsInput | number
+  gender?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   user?: Prisma.UserUpdateOneRequiredWithoutMetaDataNestedInput
@@ -547,6 +580,7 @@ export type MetaDataUncheckedUpdateWithoutAddressInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   tel?: Prisma.StringFieldUpdateOperationsInput | string
   age?: Prisma.IntFieldUpdateOperationsInput | number
+  gender?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   userId?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -587,6 +621,7 @@ export type MetaDataSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs
   id?: boolean
   tel?: boolean
   age?: boolean
+  gender?: boolean
   userId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -601,12 +636,13 @@ export type MetaDataSelectScalar = {
   id?: boolean
   tel?: boolean
   age?: boolean
+  gender?: boolean
   userId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type MetaDataOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "tel" | "age" | "userId" | "createdAt" | "updatedAt", ExtArgs["result"]["metaData"]>
+export type MetaDataOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "tel" | "age" | "gender" | "userId" | "createdAt" | "updatedAt", ExtArgs["result"]["metaData"]>
 export type MetaDataInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   address?: boolean | Prisma.MetaData$addressArgs<ExtArgs>
@@ -623,6 +659,7 @@ export type $MetaDataPayload<ExtArgs extends runtime.Types.Extensions.InternalAr
     id: number
     tel: string
     age: number
+    gender: boolean | null
     userId: number
     createdAt: Date
     updatedAt: Date
@@ -1000,6 +1037,7 @@ export interface MetaDataFieldRefs {
   readonly id: Prisma.FieldRef<"MetaData", 'Int'>
   readonly tel: Prisma.FieldRef<"MetaData", 'String'>
   readonly age: Prisma.FieldRef<"MetaData", 'Int'>
+  readonly gender: Prisma.FieldRef<"MetaData", 'Boolean'>
   readonly userId: Prisma.FieldRef<"MetaData", 'Int'>
   readonly createdAt: Prisma.FieldRef<"MetaData", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"MetaData", 'DateTime'>

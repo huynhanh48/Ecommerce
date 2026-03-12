@@ -29,3 +29,12 @@ export const authMiddleware = async (req: Request, res: Response, next: NextFunc
         next(new HttpException("Unauthorized - Invalid Token", HttpErrorCode.Unauthorized));
     }
 };
+
+export const adminMiddleware = async (req: Request, res: Response, next: NextFunction) => {
+    const user = req.user;
+    if (user && user.role === 'ADMIN') {
+        next();
+    } else {
+        next(new HttpException("Forbidden - Admin access required", HttpErrorCode.Forbidden));
+    }
+};
