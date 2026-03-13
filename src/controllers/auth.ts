@@ -62,24 +62,72 @@ export const me: RequestHandler = async (req: Request, res: Response, next: Next
     res.json(req.user);
 };
 
+export const getUserWithMeta: RequestHandler = async (req: Request, res: Response, next: NextFunction) => {
+    const userId = Number((req as any).user?.id);
+    if (!userId) {
+        return next(new HttpException("Unauthorized", HttpErrorCode.Unauthorized));
+    }
+
+    const user = await prisma.user.findUnique({
+        where: { id: userId },
+        include: {
+
+            metaData: {
+                include: {
+                    address: true
+                }
+            }
+        }
+    });
+
+    if (!user) {
+        return next(new HttpException("User not found", HttpErrorCode.NotFound, ServerErrorCode.USER_NOT_FOUND));
+    }
+
+    res.status(200).json({
+        message: "Get user with metadata and address successful",
+        data: user
+    });
+};
+
 export const addMetaData: RequestHandler = async (
     req: Request,
     res: Response,
     next: NextFunction,
 ) => {
-    const { tel, age } = MetaDataSchema.parse(req.body);
-
+    const { name, tel, age, gender } = MetaDataSchema.parse(req.body);
 
     const user = await prisma.user.findFirst({ where: { id: req.user.id } });
     if (!user) {
         return next(new HttpException("User not found", HttpErrorCode.NotFound, ServerErrorCode.USER_NOT_FOUND));
     }
-    const newMetaData = await prisma.metaData.create({
-        data: {
-            tel,
-            age,
-            userId: req.user.id,
-        },
+
+    let genderBool: boolean | undefined;
+    if (typeof gender === "boolean") {
+        genderBool = gender;
+    } else if (gender === "Male") {
+        genderBool = true;
+    } else if (gender === "Female") {
+        genderBool = false;
+    }
+
+    if (name && name !== user.name) {
+        await prisma.user.update({ where: { id: req.user.id }, data: { name } });
+    }
+
+    const createData: any = {
+        tel,
+        age,
+        userId: Number(req.user.id),
+    };
+    if (genderBool !== undefined) {
+        createData.gender = genderBool;
+    }
+
+    const newMetaData = await prisma.metaData.upsert({
+        where: { userId: Number(req.user.id) },
+        update: createData,
+        create: createData,
     });
 
     res.status(201).json({
@@ -93,16 +141,34 @@ export const updateMetaData: RequestHandler = async (
     res: Response,
     next: NextFunction,
 ) => {
-    const { tel, age } = MetaDataSchema.parse(req.body);
+    const { name, tel, age, gender } = MetaDataSchema.parse(req.body);
 
     const metaData = await prisma.metaData.findFirst({ where: { userId: req.user.id } });
     if (!metaData) {
         return next(new HttpException("MetaData not found", HttpErrorCode.NotFound));
     }
 
+    let genderBool: boolean | undefined;
+    if (typeof gender === "boolean") {
+        genderBool = gender;
+    } else if (gender === "Male") {
+        genderBool = true;
+    } else if (gender === "Female") {
+        genderBool = false;
+    }
+
+    const dataToUpdate: any = { tel, age };
+    if (genderBool !== undefined) {
+        dataToUpdate.gender = genderBool;
+    }
+
+    if (name) {
+        await prisma.user.update({ where: { id: req.user.id }, data: { name } });
+    }
+
     const updatedMetaData = await prisma.metaData.update({
         where: { userId: req.user.id },
-        data: { tel, age },
+        data: dataToUpdate,
     });
 
     res.status(200).json({

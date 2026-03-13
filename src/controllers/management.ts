@@ -1,7 +1,7 @@
 import type { NextFunction, Request, RequestHandler, Response } from "express";
 import { prisma } from "../lib/prisma.js";
 import { HttpException, HttpErrorCode } from "../exceptions/root.js";
-import { UpdateUserRoleSchema, UpdateOrderStatusSchema, OrderFilterSchema } from "../schema/management.js";
+import { UpdateUserRoleSchema, UpdateOrderStatusSchema, OrderFilterSchema, ManagementSearchSchema } from "../schema/management.js";
 import { CreatePostSchema, UpdatePostSchema } from "../schema/post.js";
 
 export const listUsers: RequestHandler = async (req: Request, res: Response, next: NextFunction) => {
@@ -107,7 +107,7 @@ export const getDashboardStats: RequestHandler = async (req: Request, res: Respo
         const totalOrders = await prisma.order.count();
         const totalProducts = await prisma.product.count();
         const totalPosts = await prisma.post.count();
-        
+
         const revenueResult = await prisma.order.aggregate({
             _sum: {
                 totalAmount: true
@@ -144,7 +144,7 @@ export const createPost: RequestHandler = async (req: Request, res: Response, ne
     try {
         const userId = (req as any).user.id;
         const validatedData = CreatePostSchema.parse(req.body);
-        
+
         // Generate slug from title
         const slug = validatedData.title.toLowerCase().replace(/ /g, '-').replace(/[^\w-]+/g, '');
 
@@ -207,6 +207,71 @@ export const listAllPosts: RequestHandler = async (req: Request, res: Response, 
         });
         res.json(posts);
     } catch (error) {
+        next(error);
+    }
+}
+
+export const searchProductsAndPosts: RequestHandler = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const parsed = ManagementSearchSchema.safeParse(req.query);
+        if (!parsed.success) {
+            return next(new HttpException("Invalid query params", HttpErrorCode.BadRequest, undefined, parsed.error));
+        }
+
+        const { q } = parsed.data;
+        const rawSkip = req.query.skip !== undefined ? Number(req.query.skip) : 0;
+        const rawTake = req.query.take !== undefined ? Number(req.query.take) : 10;
+
+        const skip = Number.isFinite(rawSkip) && rawSkip >= 0 ? Math.floor(rawSkip) : 0;
+        const take = Number.isFinite(rawTake) && rawTake > 0 ? Math.floor(rawTake) : 10;
+
+        console.log("Search query:", q, "Skip:", skip, "Take:", take);
+
+        const [products, posts] = await Promise.all([
+            prisma.product.findMany({
+                where: {
+                    OR: [
+                        { name: { contains: q } },
+                        { description: { contains: q } },
+                        { tags: { contains: q } }
+                    ]
+                },
+                skip,
+                take,
+                include: {
+                    thumbnails: true,
+                    metadata: true,
+                },
+                orderBy: { createdAt: "desc" }
+            }),
+            prisma.post.findMany({
+                where: {
+                    OR: [
+                        { title: { contains: q } },
+                        { content: { contains: q } },
+                        { summary: { contains: q } }
+                    ]
+                },
+                skip,
+                take,
+                include: {
+                    author: { select: { name: true } },
+                    category: true,
+                    _count: { select: { comments: true } }
+                },
+                orderBy: { createdAt: "desc" }
+            })
+        ]);
+
+        res.json({
+            query: q,
+            meta: { skip, take },
+            data: { products, posts }
+        });
+    } catch (error) {
+        if (error instanceof Error && (error as any).name === "ZodError") {
+            return next(new HttpException("Invalid query params", HttpErrorCode.BadRequest, undefined, error));
+        }
         next(error);
     }
 }

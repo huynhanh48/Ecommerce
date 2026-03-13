@@ -386,6 +386,7 @@ type FieldRefInputType<Model, FieldType> = Model extends never ? never : FieldRe
 export const ModelName = {
   User: 'User',
   MetaData: 'MetaData',
+  Wishlist: 'Wishlist',
   Address: 'Address',
   Product: 'Product',
   Category: 'Category',
@@ -414,7 +415,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "metaData" | "address" | "product" | "category" | "review" | "productMetaData" | "thumbnail" | "paymentMethod" | "order" | "orderItem" | "cart" | "cartItem" | "post" | "comment"
+    modelProps: "user" | "metaData" | "wishlist" | "address" | "product" | "category" | "review" | "productMetaData" | "thumbnail" | "paymentMethod" | "order" | "orderItem" | "cart" | "cartItem" | "post" | "comment"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -547,6 +548,72 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         count: {
           args: Prisma.MetaDataCountArgs<ExtArgs>
           result: runtime.Types.Utils.Optional<Prisma.MetaDataCountAggregateOutputType> | number
+        }
+      }
+    }
+    Wishlist: {
+      payload: Prisma.$WishlistPayload<ExtArgs>
+      fields: Prisma.WishlistFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.WishlistFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WishlistPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.WishlistFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WishlistPayload>
+        }
+        findFirst: {
+          args: Prisma.WishlistFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WishlistPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.WishlistFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WishlistPayload>
+        }
+        findMany: {
+          args: Prisma.WishlistFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WishlistPayload>[]
+        }
+        create: {
+          args: Prisma.WishlistCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WishlistPayload>
+        }
+        createMany: {
+          args: Prisma.WishlistCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        delete: {
+          args: Prisma.WishlistDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WishlistPayload>
+        }
+        update: {
+          args: Prisma.WishlistUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WishlistPayload>
+        }
+        deleteMany: {
+          args: Prisma.WishlistDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.WishlistUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        upsert: {
+          args: Prisma.WishlistUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WishlistPayload>
+        }
+        aggregate: {
+          args: Prisma.WishlistAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateWishlist>
+        }
+        groupBy: {
+          args: Prisma.WishlistGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.WishlistGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.WishlistCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.WishlistCountAggregateOutputType> | number
         }
       }
     }
@@ -1473,6 +1540,18 @@ export const MetaDataScalarFieldEnum = {
 export type MetaDataScalarFieldEnum = (typeof MetaDataScalarFieldEnum)[keyof typeof MetaDataScalarFieldEnum]
 
 
+export const WishlistScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  productId: 'productId',
+  postId: 'postId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type WishlistScalarFieldEnum = (typeof WishlistScalarFieldEnum)[keyof typeof WishlistScalarFieldEnum]
+
+
 export const AddressScalarFieldEnum = {
   id: 'id',
   lineone: 'lineone',
@@ -1496,6 +1575,8 @@ export const ProductScalarFieldEnum = {
   description: 'description',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
+  bestseller: 'bestseller',
+  discount: 'discount',
   categoryId: 'categoryId'
 } as const
 
@@ -1566,7 +1647,14 @@ export const OrderScalarFieldEnum = {
   id: 'id',
   userId: 'userId',
   totalAmount: 'totalAmount',
+  shippingAmount: 'shippingAmount',
   status: 'status',
+  guestName: 'guestName',
+  guestPhone: 'guestPhone',
+  lineone: 'lineone',
+  linetwo: 'linetwo',
+  province: 'province',
+  district: 'district',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
@@ -1719,6 +1807,18 @@ export const ThumbnailOrderByRelevanceFieldEnum = {
 export type ThumbnailOrderByRelevanceFieldEnum = (typeof ThumbnailOrderByRelevanceFieldEnum)[keyof typeof ThumbnailOrderByRelevanceFieldEnum]
 
 
+export const OrderOrderByRelevanceFieldEnum = {
+  guestName: 'guestName',
+  guestPhone: 'guestPhone',
+  lineone: 'lineone',
+  linetwo: 'linetwo',
+  province: 'province',
+  district: 'district'
+} as const
+
+export type OrderOrderByRelevanceFieldEnum = (typeof OrderOrderByRelevanceFieldEnum)[keyof typeof OrderOrderByRelevanceFieldEnum]
+
+
 export const PostOrderByRelevanceFieldEnum = {
   title: 'title',
   slug: 'slug',
@@ -1779,9 +1879,9 @@ export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel,
 
 
 /**
- * Reference to a field of type 'Float'
+ * Reference to a field of type 'Decimal'
  */
-export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
+export type DecimalFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Decimal'>
     
 
 
@@ -1796,6 +1896,13 @@ export type EnumPaymentStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$Pr
  * Reference to a field of type 'OrderEventStatus'
  */
 export type EnumOrderEventStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'OrderEventStatus'>
+    
+
+
+/**
+ * Reference to a field of type 'Float'
+ */
+export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
     
 
 /**
@@ -1895,6 +2002,7 @@ export type PrismaClientOptions = ({
 export type GlobalOmitConfig = {
   user?: Prisma.UserOmit
   metaData?: Prisma.MetaDataOmit
+  wishlist?: Prisma.WishlistOmit
   address?: Prisma.AddressOmit
   product?: Prisma.ProductOmit
   category?: Prisma.CategoryOmit

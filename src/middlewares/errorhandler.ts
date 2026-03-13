@@ -10,7 +10,21 @@ export const errorHandle = (method: RequestHandler) => {
         } catch (error) {
             let instance: HttpException;
             if (error instanceof ZodError) {
-                instance = new UnprocessibilityException("internal server error", error?.issues);
+                const issues = error.issues;
+                const passwordIssue = issues.find((issue) => {
+                    const path = issue.path;
+                    return (
+                        issue.code === "invalid_format" &&
+                        Array.isArray(path) &&
+                        path[0] === "password"
+                    );
+                });
+
+                const message = passwordIssue
+                    ? "Invalid password format: must contain at least one lowercase and one uppercase letter"
+                    : "internal server error";
+
+                instance = new UnprocessibilityException(message, issues);
             } else {
                 instance = error as HttpException;
             }

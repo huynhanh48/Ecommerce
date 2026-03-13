@@ -5,6 +5,7 @@ import cartRouter from './cart.js'
 import orderRouter from './order.js'
 import managementRouter from './management.js'
 import postRouter from './post.js'
+import wishlistRouter from './whishlist.js'
 
 const rootRouter = Router()
 
@@ -14,5 +15,6 @@ rootRouter.use("/cart", cartRouter)
 rootRouter.use("/orders", orderRouter)
 rootRouter.use("/management", managementRouter)
 rootRouter.use("/posts", postRouter)
+rootRouter.use("/wishlist", wishlistRouter)
 
 export default rootRouter

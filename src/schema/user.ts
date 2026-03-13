@@ -7,8 +7,10 @@ export const UserSchema = z.object({
 });
 
 export const MetaDataSchema = z.object({
+    name: z.string().min(2).max(100).optional(),
     tel: z.string().min(10).max(15).regex(/^(84|0)\d{9,10}$/), // regex for phone number of Vietnam (84xxxxxxxxxx or 0xxxxxxxxx)
     age: z.number().int().min(0).max(120),
+    gender: z.union([z.enum(["Male", "Female"]), z.boolean()]).optional()
 });
 
 export const ResetPasswordSchema = z.object({

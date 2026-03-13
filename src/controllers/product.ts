@@ -23,10 +23,10 @@ export const createProduct: RequestHandler = async (req: Request, res: Response,
     // Parse body - note: fields might be strings if coming from form-data
     // Handle potential string to number conversions for price, stock, categoryId
     const body = {
-        ...req.body,
-        price: req.body.price ? Number(req.body.price) : undefined,
-        stock: req.body.stock ? Number(req.body.stock) : undefined,
-        categoryId: req.body.categoryId ? Number(req.body.categoryId) : undefined,
+      ...req.body,
+      price: req.body.price ? Number(req.body.price) : undefined,
+      stock: req.body.stock ? Number(req.body.stock) : undefined,
+      categoryId: req.body.categoryId ? Number(req.body.categoryId) : undefined,
     };
 
     const validatedData = ProductSchema.parse(body);
@@ -65,10 +65,10 @@ export const updateProduct: RequestHandler = async (req: Request, res: Response,
     const imageUrls = files?.map(file => ({ url: file.path })) || [];
 
     const body = {
-        ...req.body,
-        price: req.body.price ? Number(req.body.price) : undefined,
-        stock: req.body.stock ? Number(req.body.stock) : undefined,
-        categoryId: req.body.categoryId ? Number(req.body.categoryId) : undefined,
+      ...req.body,
+      price: req.body.price ? Number(req.body.price) : undefined,
+      stock: req.body.stock ? Number(req.body.stock) : undefined,
+      categoryId: req.body.categoryId ? Number(req.body.categoryId) : undefined,
     };
 
     const validatedData = UpdateProductSchema.parse(body);
@@ -146,6 +146,11 @@ export const getProductById: RequestHandler = async (req: Request, res: Response
         metadata: true,
         thumbnails: true,
         category: true,
+        reviews: {
+          include: {
+            user: true,
+          },
+        },
       },
     });
 
@@ -153,9 +158,18 @@ export const getProductById: RequestHandler = async (req: Request, res: Response
       return next(new HttpException("Product not found", HttpErrorCode.NotFound));
     }
 
+    const reviewCount = product.reviews?.length ?? 0;
+    const averageRating = reviewCount > 0
+      ? Number((product.reviews.reduce((sum, item) => sum + item.rating, 0) / reviewCount).toFixed(2))
+      : null;
+
     res.status(200).json({
       message: "Get product successful",
-      data: product,
+      data: {
+        ...product,
+        rating: averageRating,
+        reviewCount,
+      },
     });
   } catch (error) {
     next(error);
@@ -176,21 +190,35 @@ export const getProducts: RequestHandler = async (req: Request, res: Response, n
       take,
       include: {
         thumbnails: true,
+        reviews: true,
       },
       orderBy: {
         createdAt: 'desc',
       },
     });
 
-    const count = await prisma.product.count({ 
-      where: { 
+    const count = await prisma.product.count({
+      where: {
         ...(categoryId !== undefined ? { categoryId } : {}),
-      } 
+      }
+    });
+
+    const enrichedProducts = products.map(product => {
+      const reviewCount = product.reviews?.length ?? 0;
+      const averageRating = reviewCount > 0
+        ? Number((product.reviews.reduce((sum, item) => sum + item.rating, 0) / reviewCount).toFixed(2))
+        : null;
+
+      return {
+        ...product,
+        rating: averageRating,
+        reviewCount,
+      };
     });
 
     res.status(200).json({
       message: "Get products successful",
-      data: products,
+      data: enrichedProducts,
       meta: {
         total: count,
         skip,

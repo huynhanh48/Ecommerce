@@ -31,19 +31,20 @@ enum PaymentStatus {
 }
 
 model User {
-  id        Int       @id @default(autoincrement())
-  email     String    @unique
+  id        Int        @id @default(autoincrement())
+  email     String     @unique
   name      String?
   password  String
-  role      Role      @default(USER)
+  role      Role       @default(USER)
   metaData  MetaData?
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
   reviews   Review[]
   orders    Order[]
   cart      Cart?
   posts     Post[]
   comments  Comment[]
+  wishlist  Wishlist[]
 }
 
 model MetaData {
@@ -56,6 +57,24 @@ model MetaData {
   address   Address[]
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
+}
+
+model Wishlist {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  user      User     @relation(fields: [userId], references: [id])
+  productId Int?
+  product   Product? @relation(fields: [productId], references: [id])
+  postId    Int?
+  post      Post?    @relation(fields: [postId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([userId, productId], name: "unique_user_product")
+  @@unique([userId, postId], name: "unique_user_post")
+  @@index([userId])
+  @@index([productId])
+  @@index([postId])
 }
 
 model Address {
@@ -74,14 +93,17 @@ model Address {
 model Product {
   id          Int              @id @default(autoincrement())
   name        String
-  price       Float
+  price       Decimal          @db.Decimal(18, 2)
   stock       Int
   tags        String?
-  description String?
+  description String?          @db.Text
+  wishlist    Wishlist[]
   thumbnails  Thumbnail[]
   metadata    ProductMetaData?
   createdAt   DateTime         @default(now())
   updatedAt   DateTime         @updatedAt
+  bestseller  Boolean          @default(false)
+  discount    Decimal?         @default(0) @db.Decimal(18, 2)
   reviews     Review[]
   category    Category?        @relation(fields: [categoryId], references: [id])
   categoryId  Int?
@@ -148,15 +170,24 @@ model PaymentMethod {
 }
 
 model Order {
-  id            Int              @id @default(autoincrement())
-  userId        Int
-  user          User             @relation(fields: [userId], references: [id])
-  totalAmount   Float
-  status        OrderEventStatus @default(PENDING)
-  paymentMethod PaymentMethod?
-  orderItems    OrderItem[]
-  createdAt     DateTime         @default(now())
-  updatedAt     DateTime         @updatedAt
+  id             Int              @id @default(autoincrement())
+  userId         Int?
+  user           User?            @relation(fields: [userId], references: [id])
+  totalAmount    Decimal          @db.Decimal(18, 2)
+  shippingAmount Decimal          @default(0) @db.Decimal(18, 2)
+  status         OrderEventStatus @default(PENDING)
+  paymentMethod  PaymentMethod?
+  orderItems     OrderItem[]
+
+  guestName  String?
+  guestPhone String?
+  lineone    String?
+  linetwo    String?
+  province   String?
+  district   String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model OrderItem {
@@ -166,7 +197,7 @@ model OrderItem {
   productId Int
   product   Product @relation(fields: [productId], references: [id])
   quantity  Int
-  price     Float
+  price     Decimal @db.Decimal(18, 2)
 }
 
 model Cart {
@@ -188,35 +219,36 @@ model CartItem {
 }
 
 model Post {
-  id          Int       @id @default(autoincrement())
-  title       String
-  slug        String    @unique
-  content     String    @db.Text
-  summary     String?   @db.VarChar(500)
-  thumbnail   String?
-  published   Boolean   @default(false)
-  viewCount   Int       @default(0)
-  authorId    Int
-  author      User      @relation(fields: [authorId], references: [id])
-  categoryId  Int
-  category    Category  @relation(fields: [categoryId], references: [id])
-  comments    Comment[]
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
+  id         Int        @id @default(autoincrement())
+  title      String
+  slug       String     @unique
+  content    String     @db.Text
+  summary    String?    @db.VarChar(500)
+  wishlist   Wishlist[]
+  thumbnail  String?
+  published  Boolean    @default(false)
+  viewCount  Int        @default(0)
+  authorId   Int
+  author     User       @relation(fields: [authorId], references: [id])
+  categoryId Int
+  category   Category   @relation(fields: [categoryId], references: [id])
+  comments   Comment[]
+  createdAt  DateTime   @default(now())
+  updatedAt  DateTime   @updatedAt
 }
 
 model Comment {
-  id        Int       @id @default(autoincrement())
-  content   String    @db.Text
-  postId    Int
-  post      Post      @relation(fields: [postId], references: [id], onDelete: Cascade)
-  userId    Int
-  user      User      @relation(fields: [userId], references: [id])
-  
+  id      Int    @id @default(autoincrement())
+  content String @db.Text
+  postId  Int
+  post    Post   @relation(fields: [postId], references: [id], onDelete: Cascade)
+  userId  Int
+  user    User   @relation(fields: [userId], references: [id])
+
   // Tính năng Reply (Bình luận lồng nhau)
-  parentId  Int?
-  parent    Comment?  @relation("CommentToComment", fields: [parentId], references: [id])
-  replies   Comment[] @relation("CommentToComment")
-  
-  createdAt DateTime  @default(now())
+  parentId Int?
+  parent   Comment?  @relation("CommentToComment", fields: [parentId], references: [id])
+  replies  Comment[] @relation("CommentToComment")
+
+  createdAt DateTime @default(now())
 }

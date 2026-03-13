@@ -28,6 +28,11 @@ export type User = Prisma.UserModel
  */
 export type MetaData = Prisma.MetaDataModel
 /**
+ * Model Wishlist
+ * 
+ */
+export type Wishlist = Prisma.WishlistModel
+/**
  * Model Address
  * 
  */

@@ -381,10 +381,6 @@ export type PaymentMethodNullableScalarRelationFilter = {
   isNot?: Prisma.PaymentMethodWhereInput | null
 }
 
-export type BoolFieldUpdateOperationsInput = {
-  set?: boolean
-}
-
 export type EnumPaymentStatusFieldUpdateOperationsInput = {
   set?: $Enums.PaymentStatus
 }

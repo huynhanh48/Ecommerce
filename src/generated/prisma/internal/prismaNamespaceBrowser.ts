@@ -53,6 +53,7 @@ export const AnyNull = runtime.AnyNull
 export const ModelName = {
   User: 'User',
   MetaData: 'MetaData',
+  Wishlist: 'Wishlist',
   Address: 'Address',
   Product: 'Product',
   Category: 'Category',
@@ -110,6 +111,18 @@ export const MetaDataScalarFieldEnum = {
 export type MetaDataScalarFieldEnum = (typeof MetaDataScalarFieldEnum)[keyof typeof MetaDataScalarFieldEnum]
 
 
+export const WishlistScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  productId: 'productId',
+  postId: 'postId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type WishlistScalarFieldEnum = (typeof WishlistScalarFieldEnum)[keyof typeof WishlistScalarFieldEnum]
+
+
 export const AddressScalarFieldEnum = {
   id: 'id',
   lineone: 'lineone',
@@ -133,6 +146,8 @@ export const ProductScalarFieldEnum = {
   description: 'description',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
+  bestseller: 'bestseller',
+  discount: 'discount',
   categoryId: 'categoryId'
 } as const
 
@@ -203,7 +218,14 @@ export const OrderScalarFieldEnum = {
   id: 'id',
   userId: 'userId',
   totalAmount: 'totalAmount',
+  shippingAmount: 'shippingAmount',
   status: 'status',
+  guestName: 'guestName',
+  guestPhone: 'guestPhone',
+  lineone: 'lineone',
+  linetwo: 'linetwo',
+  province: 'province',
+  district: 'district',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
@@ -354,6 +376,18 @@ export const ThumbnailOrderByRelevanceFieldEnum = {
 } as const
 
 export type ThumbnailOrderByRelevanceFieldEnum = (typeof ThumbnailOrderByRelevanceFieldEnum)[keyof typeof ThumbnailOrderByRelevanceFieldEnum]
+
+
+export const OrderOrderByRelevanceFieldEnum = {
+  guestName: 'guestName',
+  guestPhone: 'guestPhone',
+  lineone: 'lineone',
+  linetwo: 'linetwo',
+  province: 'province',
+  district: 'district'
+} as const
+
+export type OrderOrderByRelevanceFieldEnum = (typeof OrderOrderByRelevanceFieldEnum)[keyof typeof OrderOrderByRelevanceFieldEnum]
 
 
 export const PostOrderByRelevanceFieldEnum = {

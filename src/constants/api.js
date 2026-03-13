@@ -6,6 +6,7 @@ const API = {
         REGISTER: `${BASE_URL}/auth/register`,
         ME: `${BASE_URL}/auth/me`,
         METADATA: `${BASE_URL}/auth/metadata`,
+        USER_METADATA: `${BASE_URL}/auth/me-with-meta`,
         ADDRESS: `${BASE_URL}/auth/address`,
         ADDRESS_BY_ID: (id) => `${BASE_URL}/auth/address/${id}`,
         CHANGE_PASSWORD: `${BASE_URL}/auth/change-password`,
@@ -37,8 +38,15 @@ const API = {
         COMMENTS: (postId) => `${BASE_URL}/posts/${postId}/comments`,
         ADD_COMMENT: `${BASE_URL}/posts/comments`,
     },
+    WISHLIST: {
+        GET: `${BASE_URL}/management/wishlist`,
+        ADD: `${BASE_URL}/management/wishlist`,
+        REMOVE: (id) => `${BASE_URL}/management/wishlist/${id}`,
+        CLEAR: `${BASE_URL}/management/wishlist`,
+    },
     ADMIN: {
         DASHBOARD: `${BASE_URL}/management/dashboard`,
+        SEARCH_ALL: (q) => `${BASE_URL}/management?q=${q}`,
         USERS: {
             LIST: `${BASE_URL}/management/users`,
             GET_BY_ID: (id) => `${BASE_URL}/management/users/${id}`,

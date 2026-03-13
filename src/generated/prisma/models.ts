@@ -10,6 +10,7 @@
  */
 export type * from './models/User'
 export type * from './models/MetaData'
+export type * from './models/Wishlist'
 export type * from './models/Address'
 export type * from './models/Product'
 export type * from './models/Category'

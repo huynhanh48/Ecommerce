@@ -1,9 +1,10 @@
 import { Router } from 'express'
-import { login, me, register, addMetaData, updateMetaData, addAddress, updateAddress, deleteAddress, getMetaData, getAddress, changePassword, forgotPassword, resetPasswordWithToken } from '~/controllers/auth'
+import { login, me, register, addMetaData, updateMetaData, addAddress, updateAddress, deleteAddress, getMetaData, getAddress, changePassword, forgotPassword, resetPasswordWithToken, getUserWithMeta } from '~/controllers/auth'
 import { authMiddleware } from '~/middlewares/authorization'
 import { errorHandle } from '~/middlewares/errorhandler'
 const authRouter = Router()
 authRouter.get("/me", authMiddleware, errorHandle(me))
+authRouter.get("/me-with-meta", authMiddleware, errorHandle(getUserWithMeta))
 authRouter.get("/metadata", authMiddleware, errorHandle(getMetaData))
 authRouter.get("/address", authMiddleware, errorHandle(getAddress))
 authRouter.post("/login", errorHandle(login))
